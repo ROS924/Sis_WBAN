@@ -37,12 +37,21 @@ class ProfissionalDeSaude(Usuario):
       }
       self.publicar(mensagem)
 
+   def on_message(self,client,userdata,msg):
+        mensagem = super().on_message(client,userdata,msg)
 
-   def receberAlertas(self, mensagem: dict):
-        """
-        Callback para processar alertas recebidos via MQTT.
-        """
-        print(f"[Alerta] {mensagem}")
+        if mensagem["acao"] == "alerta": #Método receber alerta
+            resposta = {"acao": "res_alerta",
+                    "tipo_usuario_origem": self.tipo,
+                    "tipo_usuario_destino": tipoUsuario.Paciente.name,
+                    "usuario_origem": self.cpf,
+                    "usuario_destino": mensagem["usuario_origem"],
+                    "dados": "",
+                    "msg_texto": "Ajuda a caminho"
+                    }
+            
+            self.publicar(resposta)
+
 
    def analisarTendencias(self, paciente_id: str):
       """

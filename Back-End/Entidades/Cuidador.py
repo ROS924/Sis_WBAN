@@ -3,8 +3,8 @@ from ..Enums import Usuarios
 tipoUsuario = Usuarios.TipoDeUsuario
 
 class Cuidador(Usuario): 
-    def __init__(self, login: str, senha: str, tipo: tipoUsuario, nome: str, cpf: str, 
-                 dataNascimento: str, telefone: str, endereco: str, parentesco: str):
+    def __init__(self, login: str, senha: str, nome: str, cpf: str, 
+                 dataNascimento: str, telefone: str, endereco: str, parentesco: str, tipo= tipoUsuario.Cuidador.name):
         super().__init__(login, senha, tipo, nome, cpf, dataNascimento, telefone, endereco)
         self.parentesco = parentesco
 

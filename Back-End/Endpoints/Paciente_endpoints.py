@@ -1,35 +1,22 @@
-from flask import Flask, request
 from ..Entidades.Paciente import Paciente
 
 class PacienteEndpoint:
 
-    app = Flask(__name__)
-
-
-    @app.route("/paciente/conectar", methods=["GET"])
-    def conectar():
-        infos = request.get_json()
-
+    def conectar(infos):
         paciente = Paciente(infos["login"],infos["senha"],infos["nome"],
                             infos["cpf"],infos["dataNascimento"],infos["telefone"],
                             infos["endereco"],infos["cuidador"],infos["profSaude"])
 
         return paciente.conectar()
 
-    @app.route("/paciente/solicitarajuda", methods=["GET"])
-    def soicitarAjuda():
-        infos = request.get_json()
-
+    def soicitarAjuda(infos):
         paciente = Paciente(infos["login"],infos["senha"],infos["nome"],
                             infos["cpf"],infos["dataNascimento"],infos["telefone"],
                             infos["endereco"],infos["cuidador"],infos["profSaude"])
         
         return paciente.solicitarAjuda()
     
-    @app.route("/paciente/atualizardados",methods=["POST"])
-    def atualizarDados():
-        infos = request.get_json()
-
+    def atualizarDados(infos):
         paciente = Paciente(infos["login"],infos["senha"],infos["nome"],
                             infos["cpf"],infos["dataNascimento"],infos["telefone"],
                             infos["endereco"],infos["cuidador"],infos["profSaude"])
