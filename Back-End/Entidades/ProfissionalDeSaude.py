@@ -3,7 +3,7 @@ from ..Enums import Usuarios
 tipoUsuario = Usuarios.TipoDeUsuario
 
 class ProfissionalDeSaude(Usuario): 
-   def __init__(self,login:str,senha:str,tipo:tipoUsuario,nome:str, cpf:str, dataNascimento:str, telefone:str,endereco:str,crm:str):
+   def __init__(self,login:str,senha:str,nome:str, cpf:str, dataNascimento:str, telefone:str,endereco:str,crm:str,tipo=tipoUsuario.ProfissionalDeSaude.name):
       super().__init__(login,senha,tipo,nome,cpf,dataNascimento,telefone,endereco)
       self.crm = crm
 

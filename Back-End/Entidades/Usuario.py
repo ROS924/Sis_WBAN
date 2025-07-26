@@ -63,14 +63,23 @@ class Usuario:
         else:
             print(f"Erro de conexão: {rc}")
 
-    def on_message(self, client, userdata, msg):       
+    def on_message(self, client, userdata, msg):
         mensagem = msg.payload.decode()
-        #mensagem = json(mensagem)
-        mensagem = json.loads(mensagem)
 
-        print(f"[{self.login}] Mensagem recebida em {msg.topic}: {mensagem}")
+        if not mensagem.strip():
+            print(f"[{self.login}] ⚠️ Mensagem vazia recebida em {msg.topic}")
+            return {}
 
+        try:
+            mensagem = json.loads(mensagem)
+        except json.JSONDecodeError as e:
+            print(f"[{self.login}] ❌ Erro ao decodificar JSON: {e}")
+            print(f"[{self.login}] Conteúdo recebido: {msg.payload}")
+            return {}
+
+        print(f"[{self.login}] ✅ Mensagem recebida em {msg.topic}: {mensagem}")
         return mensagem
+
 
     def on_publish(self, client, userdata, mid):
         print(f"[{self.login}] Mensagem publicada (ID: {mid})")

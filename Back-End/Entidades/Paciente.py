@@ -25,14 +25,17 @@ class Paciente(Usuario):
         
         self.publicar(mensagem)
 
-   def on_message(client,userdata,msg):
-        mensagem = super().on_message(client,userdata,msg)
+   def on_message(self, client, userdata, msg):
+        mensagem = super().on_message(client, userdata, msg)
+
+        if not mensagem:
+            return
+
+        notificacao = None  # Inicializa a variável
 
         if mensagem["acao"] == "res_ajuda":
             notificacao = f"ATUALIZAÇÃO DO PEDIDO DE AJUDA: {mensagem['msg_texto']}"
 
-            return notificacao
-        
         elif mensagem["acao"] == "alerta":
             leituras = mensagem["dados"]
             notificacao = f"SUAS LEITURAS BIOMÉTRICAS ESTÃO ANORMAIS !!!\n\n{leituras}"
@@ -40,7 +43,12 @@ class Paciente(Usuario):
         elif mensagem["acao"] == "put_ok":
             notificacao = f"{mensagem['msg_texto']} com sucesso !"
 
-        return notificacao
+        if notificacao:
+            print(f"[{self.login}] 📢 Notificação recebida:\n{notificacao}")
+            return notificacao
+        else:
+            print(f"[{self.login}] ⚠️ Mensagem desconhecida: {mensagem}")
+            return None
    
    def atualizarDados(self, novosDados:json):
        mensagem = {"acao": "put",

@@ -10,7 +10,6 @@ tipoUsuario = Usuarios.TipoDeUsuario
 prof = ProfissionalDeSaude(
     login="drjoao",
     senha="senha123",
-    tipo=tipoUsuario.ProfissionalDeSaude.name,
     nome="Dr. João",
     cpf="00011122233",
     dataNascimento="1970-01-01",
@@ -59,7 +58,9 @@ pac.solicitarAjuda()
 # Aguarde um tempo para garantir que tudo foi enviado
 time.sleep(3)
 
+while True:
+    pass
 # Desconectar
-prof.desconectar()
-pac.desconectar()
-print("Conexões encerradas.")
+#prof.desconectar()
+#pac.desconectar()
+#print("Conexões encerradas.")
