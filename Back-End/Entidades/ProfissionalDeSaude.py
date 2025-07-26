@@ -61,7 +61,7 @@ class ProfissionalDeSaude(Usuario):
       "acao": "analisar_tendencias",
       "tipo_usuario_origem": self.tipo,
       "tipo_usuario_destino": "SistemsWBAN",
-      "usuario_origem": self.crm,
+      "usuario_origem": self.cpf,
       "usuario_destino": "",
       "dados": paciente_id,
       "msg_texto": ""
@@ -81,7 +81,7 @@ class ProfissionalDeSaude(Usuario):
         "acao": "enviar_recomendacoes",
         "tipo_usuario_origem": self.tipo,
         "tipo_usuario_destino": tipoUsuario.Paciente,
-        "usuario_origem": self.crm,
+        "usuario_origem": self.cpf,
         "usuario_destino": paciente_id,
         "dados": "",
         "msg_texto": dados
@@ -96,7 +96,7 @@ class ProfissionalDeSaude(Usuario):
         "acao": "requisitar_exames",
         "tipo_usuario_origem": self.tipo,
         "tipo_usuario_destino": tipoUsuario.Paciente,
-        "usuario_origem": self.crm,
+        "usuario_origem": self.cpf,
         "usuario_destino": paciente_id,
         "dados": "",
         "msg_texto": ""
@@ -111,7 +111,7 @@ class ProfissionalDeSaude(Usuario):
         "acao": "enviar_recomendacoes",
         "tipo_usuario_origem": self.tipo,
         "tipo_usuario_destino": tipoUsuario.Paciente,
-        "usuario_origem": self.crm,
+        "usuario_origem": self.cpf,
         "usuario_destino": paciente_id,
         "dados": "",
         "msg_texto": recomendacoes

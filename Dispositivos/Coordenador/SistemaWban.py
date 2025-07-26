@@ -19,37 +19,47 @@ class SistemaWban:
         with open('.../BD/BD_Entidades.json', 'w', encoding='utf-8') as f:
             json.dump(dados, f, indent=2, ensure_ascii=False)
 
-    def atualizarDadosPessoais(self, novosDados:json,cpf:str):
+    def armazenarDados(self, dados:json,cpf:str,solicitante:str):
         db = self.carregar_dados()
         
-        # Procura o paciente pelo ID
-        pacientes = db['$Pacientes']
-        paciente_encontrado = None
+        # Procura a entidade pelo ID
+        entidades = db[f'${solicitante}']
+        entidade_encontrada = None
         
-        for paciente in pacientes:
-            if paciente['cpf'] == cpf:
-                paciente_encontrado = paciente
+        for entidade in entidades:
+            if entidade['cpf'] == cpf:
+                entidade_encontrada = entidade
                 break
         
-        if not paciente_encontrado:
-            return "erro: Paciente não encontrado"
+        if not entidade_encontrada:
+            return "erro: entidade não encontrado"
         
-        # Atualiza os campos do paciente
-        for chave, valor in novosDados.items():
-            if chave in paciente_encontrado:
-                paciente_encontrado[chave] = valor
+        # Atualiza os campos da entidade
+        for chave, valor in dados.items():
+            if chave in entidade_encontrada:
+                entidade_encontrada[chave] = valor
         
         # Salva as alterações no arquivo JSON
         self.salvar_dados(db)
 
+        #Enviar resposta 
 
+        mensagem = {"acao": "res_regis",
+                    "tipo_usuario_origem": "",
+                    "tipo_usuario_destino": entidade_encontrada["tipo"],
+                    "usuario_origem":"",
+                    "usuario_destino": entidade_encontrada["cpf"],
+                    "dados": "",
+                    "msg_texto": "Dados registrados com sucesso !"}
+        
+        topico = f"{entidade_encontrada["tipo"]}/{entidade_encontrada["login"]}/sub"
 
-
+        return self.publicar(mensagem,topico)
 
 
     def on_connect(self,client, userdata, flags, rc):
         if rc == 0:
-
+            print("Conectado ao broker!")
             bd = self.carregar_dados()
 
             pacientes = bd["$Pacientes"]
@@ -58,18 +68,19 @@ class SistemaWban:
 
             for paciente in pacientes:
                 topico = f"{paciente["tipo"]}/{paciente["login"]}/pub"
+                self.client.subscribe(topico)
+                print(f"Inscrito em: {topico}")
 
             for cuidadores in cuidadores:
                 topico = f"{cuidadores["tipo"]}/{cuidadores["login"]}/pub"
+                self.client.subscribe(topico)
+                print(f"Inscrito em: {topico}")
 
             for medico in medicos:
                 topico = f"{medico["tipo"]}/{medico["login"]}/pub"
-
-            print(f"[{self.login}] Conectado ao broker!")
-            # Inscrever nos tópicos específicos
-            topico = self.topicoSubscribe
-            self.client.subscribe(topico)
-            print(f"[{self.login}] Inscrito em: {topico}")
+                self.client.subscribe(topico)
+                print(f"Inscrito em: {topico}")
+            
         else:
             print(f"Erro de conexão: {rc}")
 
@@ -93,8 +104,7 @@ class SistemaWban:
         self.client.loop_stop()
         self.client.disconnect()
 
-    def publicar(self, mensagem):
-        topico = self.topicoPublish
+    def publicar(self, mensagem, topico):
         if isinstance(mensagem, dict):
             mensagem = json.dumps(mensagem)
         self.client.publish(topico, mensagem)

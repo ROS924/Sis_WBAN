@@ -1,5 +1,5 @@
 {
-    "$Pacientes":[
+    "$Paciente":[
         {
             "login": "jjObrabo",
             "senha": "jjObrabo",
@@ -13,7 +13,7 @@
             "tipo": "Paciente"
         }
     ],
-    "$ProfissionaisDeSaude":[
+    "$ProfissionalDeSaude":[
         {
             "login": "medicao",
             "senha": "medicao",
@@ -26,7 +26,7 @@
             "tipo": "ProfissionalDeSaude"
         }
     ],
-    "$Cuidadores":[
+    "$Cuidador":[
         {
             "login": "mae",
             "senha": "mae",
@@ -39,5 +39,5 @@
             "tipo": "Cuidador"
         }
     ],
-    "$Administradores":{}    
+    "$Administradore":{}    
 }

@@ -40,8 +40,8 @@ class Paciente(Usuario):
             leituras = mensagem["dados"]
             notificacao = f"SUAS LEITURAS BIOMÉTRICAS ESTÃO ANORMAIS !!!\n\n{leituras}"
 
-        elif mensagem["acao"] == "put_ok":
-            notificacao = f"{mensagem['msg_texto']} com sucesso !"
+        elif mensagem["acao"] == "res_regis":
+            notificacao = f"{mensagem['msg_texto']}"
 
         if notificacao:
             print(f"[{self.login}] 📢 Notificação recebida:\n{notificacao}")
@@ -51,7 +51,7 @@ class Paciente(Usuario):
             return None
    
    def atualizarDados(self, novosDados:json):
-       mensagem = {"acao": "put",
+       mensagem = {"acao": "regis",
                     "tipo_usuario_origem": self.tipo,
                     "tipo_usuario_destino": None,
                     "usuario_origem": self.cpf,
