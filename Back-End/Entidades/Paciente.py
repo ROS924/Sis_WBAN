@@ -29,7 +29,7 @@ class Paciente(Usuario):
         mensagem = super().on_message(client,userdata,msg)
 
         if mensagem["acao"] == "res_ajuda":
-            notificacao = f"ATUALIZAÇÃO DO PEDIDO DE AJUDA: {mensagem["msg_texto"]}"
+            notificacao = f"ATUALIZAÇÃO DO PEDIDO DE AJUDA: {mensagem['msg_texto']}"
 
             return notificacao
         
@@ -38,7 +38,7 @@ class Paciente(Usuario):
             notificacao = f"SUAS LEITURAS BIOMÉTRICAS ESTÃO ANORMAIS !!!\n\n{leituras}"
 
         elif mensagem["acao"] == "put_ok":
-            notificacao = f"{mensagem["msg_texto"]} com sucesso !"
+            notificacao = f"{mensagem['msg_texto']} com sucesso !"
 
         return notificacao
    

@@ -65,7 +65,8 @@ class Usuario:
 
     def on_message(self, client, userdata, msg):       
         mensagem = msg.payload.decode()
-        mensagem = json(mensagem)
+        #mensagem = json(mensagem)
+        mensagem = json.loads(mensagem)
 
         print(f"[{self.login}] Mensagem recebida em {msg.topic}: {mensagem}")
 
@@ -84,5 +85,7 @@ class Usuario:
 
     def publicar(self, mensagem):
         topico = self.topicoPublish
+        if isinstance(mensagem, dict):
+            mensagem = json.dumps(mensagem)
         self.client.publish(topico, mensagem)
-
+        print("topico: ",topico)
