@@ -68,28 +68,45 @@ class ProfissionalDeSaude(Usuario):
         """
         Processa dados clínicos para auxiliar no diagnóstico.
         """
-        print(f"Processando dados do paciente {paciente_id} para diagnóstico...")
+        mensagem = {
+        "acao": "enviar_recomendacoes",
+        "tipo_usuario_origem": self.tipo,
+        "tipo_usuario_destino": tipoUsuario.Paciente,
+        "usuario_origem": self.crm,
+        "usuario_destino": paciente_id,
+        "dados": "",
+        "msg_texto": dados
+        }
+        self.publicar(mensagem)
 
-   def emitirRequisicaoExames(self, paciente_id: str, exames: list):
+   def emitirRequisicaoExames(self, paciente_id: str):
         """
         Emite requisição de exames para um paciente.
         """
-        payload = json.dumps({
-            "paciente_id": paciente_id,
-            "exames": exames,
-            "crm": self.crm
-        })
-        self.mqtt_publish("sistema/exames", payload)
+        mensagem = {
+        "acao": "requisitar_exames",
+        "tipo_usuario_origem": self.tipo,
+        "tipo_usuario_destino": tipoUsuario.Paciente,
+        "usuario_origem": self.crm,
+        "usuario_destino": paciente_id,
+        "dados": "",
+        "msg_texto": ""
+        }
+        self.publicar(mensagem)
 
    def enviarRecomendacoes(self, paciente_id: str, recomendacoes: str):
         """
         Envia recomendações clínicas para um paciente/cuidador.
         """
-        payload = json.dumps({
-            "paciente_id": paciente_id,
-            "recomendacoes": recomendacoes,
-            "crm": self.crm
-        })
-        self.mqtt_publish(f"paciente/{paciente_id}/recomendacoes", payload)
+        mensagem = {
+        "acao": "enviar_recomendacoes",
+        "tipo_usuario_origem": self.tipo,
+        "tipo_usuario_destino": tipoUsuario.Paciente,
+        "usuario_origem": self.crm,
+        "usuario_destino": paciente_id,
+        "dados": "",
+        "msg_texto": recomendacoes
+        }
+        self.publicar(mensagem)
 
       
