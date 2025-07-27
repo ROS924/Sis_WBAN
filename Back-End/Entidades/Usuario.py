@@ -65,6 +65,7 @@ class Usuario:
 
     def on_message(self, client, userdata, msg):
         mensagem = msg.payload.decode()
+        mensagem = json.loads(mensagem)
 
         if not mensagem.strip():
             print(f"[{self.login}] ⚠️ Mensagem vazia recebida em {msg.topic}")

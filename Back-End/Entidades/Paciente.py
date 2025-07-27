@@ -53,9 +53,9 @@ class Paciente(Usuario):
    def atualizarDados(self, novosDados:json):
        mensagem = {"acao": "regis",
                     "tipo_usuario_origem": self.tipo,
-                    "tipo_usuario_destino": None,
+                    "tipo_usuario_destino": "",
                     "usuario_origem": self.cpf,
-                    "usuario_destino": None,
+                    "usuario_destino": "",
                     "dados": novosDados,
                     "msg_texto": ""
                     }
