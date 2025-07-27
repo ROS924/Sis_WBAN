@@ -19,20 +19,29 @@ class SistemaWban:
         with open('.../BD/BD_Entidades.json', 'w', encoding='utf-8') as f:
             json.dump(dados, f, indent=2, ensure_ascii=False)
 
-    def armazenarDados(self, dados:json,cpf:str,solicitante:str):
-        db = self.carregar_dados()
-        
+    def buscarEntidade(db, cpf:str,tipoEntidade:str):
         # Procura a entidade pelo ID
-        entidades = db[f'${solicitante}']
+        entidades = db[f'${tipoEntidade}']
         entidade_encontrada = None
-        
-        for entidade in entidades:
-            if entidade['cpf'] == cpf:
-                entidade_encontrada = entidade
-                break
+
+        if tipoEntidade == "ProfissionalDeSaude":
+            for entidade in entidades:
+                if entidade['crm'] == cpf:
+                    entidade_encontrada = entidade
+                    return entidade_encontrada
+        else:
+            for entidade in entidades:
+                if entidade['cpf'] == cpf:
+                    entidade_encontrada = entidade
+                    return entidade_encontrada
         
         if not entidade_encontrada:
             return "erro: entidade não encontrado"
+
+    def armazenarDados(self, dados:json,cpf:str,solicitante:str):
+        db = self.carregar_dados()
+        
+        entidade_encontrada = self.buscarEntidade(db,cpf,solicitante)
         
         # Atualiza os campos da entidade
         for chave, valor in dados.items():
@@ -54,7 +63,64 @@ class SistemaWban:
         
         topico = f"{entidade_encontrada["tipo"]}/{entidade_encontrada["login"]}/sub"
 
+        print("Dados registrados com sucesso !")
+
         return self.publicar(mensagem,topico)
+    
+    def gerarAlerta(self, cabecalho:dict, dados):
+        destinatario = self.buscarEntidade(cabecalho["usuario_destino"], cabecalho["tipo_usuario_destino"])
+
+        if cabecalho["acao"] == "ajuda": #Quando um paciente solicita ajuda
+            # Gera o alerta para o profissional de saúde
+            menssagem = {
+                "acao": "alerta",
+                "tipo_usuario_origem": cabecalho["tipo_usuario_origem"],
+                "tipo_usuario_destino": cabecalho["tipo_usuario_destino"],
+                "usuario_origem":cabecalho["usuario_origem"],
+                "usuario_destino": cabecalho["usuario_destino"],
+                "dados": dados,
+                "msg_texto": ""
+            }
+
+            topico = f"{cabecalho["tipo_usuario_destino"]}/{destinatario["login"]}/sub"
+            self.publicar(menssagem,topico)
+
+            # Gera a resposta para o paciente
+            menssagem = {
+                "acao": "res_ajuda",
+                "tipo_usuario_origem": "",
+                "tipo_usuario_destino": cabecalho["tipo_usuario_origem"],
+                "usuario_origem":"",
+                "usuario_destino": cabecalho["usuario_origem"],
+                "dados": "",
+                "msg_texto": "Pedido de ajuda enviado"
+            }
+
+            pac = self.buscarEntidade(cabecalho["usuario_origem"],cabecalho["tipo_usuario_origem"])
+            topico = f"{cabecalho["tipo_usuario_origem"]},{pac["login"]}/sub"
+            self.publicar(menssagem, topico)
+
+        elif cabecalho["acao"] == "res_alerta": #Quando o médico responde o pedido de ajuda
+            # origem -> médico
+            # destino -> paciente
+            #Envia a resposta ao paciente
+            menssagem = {
+                "acao": "res_ajuda",
+                "tipo_usuario_origem": cabecalho["tipo_usuario_origem"],
+                "tipo_usuario_destino": cabecalho["tipo_usuario_destino"],
+                "usuario_origem":cabecalho["usuario_origem"],
+                "usuario_destino": cabecalho["usuario_destino"],
+                "dados": "",
+                "msg_texto": "Ajuda a cominho !!"
+            }
+
+            pac = self.buscarEntidade(cabecalho["usuario_destino"],cabecalho["tipo_usuario_destino"])
+            topico = f"{cabecalho["tipo_usuario_destino"]},{pac["login"]}/sub"
+            self.publicar(menssagem, topico)
+
+    def receberDadosDosSensores():
+        #Precisa ser implementada
+        pass
 
 
     def on_connect(self,client, userdata, flags, rc):
@@ -86,10 +152,17 @@ class SistemaWban:
 
     def on_message(self, client, userdata, msg):       
         mensagem = msg.payload.decode()
-        #mensagem = json(mensagem)
         mensagem = json.loads(mensagem)
 
-        print(f"[{self.login}] Mensagem recebida em {msg.topic}: {mensagem}")
+        if mensagem["acao"] == "ajuda":
+            dados = self.receberDadosDosSensores()
+            self.gerarAlerta(mensagem,dados)
+
+        elif mensagem["acao"] == "regis":
+            self.armazenarDados(mensagem["dados"],mensagem["usuario_origem"],mensagem["tipo_usuario_origem"])
+
+        elif mensagem["acao"] == "res_ajuda":
+            self.gerarAlerta(mensagem,"")
 
         return mensagem
 
