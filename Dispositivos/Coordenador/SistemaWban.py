@@ -120,7 +120,7 @@ class SistemaWban:
 
     def retornarDadosHistorico(self, cabecalho:dict):
         # Retorna os dados do paciente pro profissional
-        dados = self.receberDadosDosSensores()
+        dados = self.receberDadosHistorico()
         menssagem = {
             "acao": "res_historico",
             "tipo_usuario_origem": "",
@@ -136,6 +136,11 @@ class SistemaWban:
 
     def receberDadosDosSensores():
         #Precisa ser implementada
+        pass
+    def receberDadosHistorico():
+        # Precisa ser implementada;
+        # talvez um for que use receberDadosDosSensores,
+        # ou carregar_dados
         pass
 
 
