@@ -118,6 +118,22 @@ class SistemaWban:
             topico = f"{cabecalho["tipo_usuario_destino"]},{pac["login"]}/sub"
             self.publicar(menssagem, topico)
 
+    def retornarDadosHistorico(self, cabecalho:dict):
+        # Retorna os dados do paciente pro profissional
+        dados = self.receberDadosDosSensores()
+        menssagem = {
+            "acao": "res_historico",
+            "tipo_usuario_origem": "",
+            "tipo_usuario_destino": cabecalho["tipo_usuario_origem"],
+            "usuario_origem":"",
+            "usuario_destino": cabecalho["usuario_origem"],
+            "dados": dados,
+            "msg_texto": "Dados retornados"
+        }
+        pac = self.buscarEntidade(cabecalho["usuario_origem"],cabecalho["tipo_usuario_origem"])
+        topico = f"{cabecalho["tipo_usuario_origem"]}/{pac["login"]}/sub"
+        self.publicar(menssagem,topico)
+
     def receberDadosDosSensores():
         #Precisa ser implementada
         pass
