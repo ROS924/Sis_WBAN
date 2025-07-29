@@ -1,43 +1,43 @@
 {
-    "$Paciente":[
-        {
-            "login": "jjObrabo",
-            "senha": "jjObrabo",
-            "nome": "jorge júnior",
-            "cpf": "12345678910",
-            "dataNascimento":"01/01/2010",
-            "telefone": "719848276333",
-            "endereco": "Rua J, jorgelandia, número 10",
-            "cuidador": "12345678911",
-            "profSaude": "123456",
-            "tipo": "Paciente"
-        }
-    ],
-    "$ProfissionalDeSaude":[
-        {
-            "login": "medicao",
-            "senha": "medicao",
-            "nome": "Senhor médico",
-            "cpf": "12345678912",
-            "dataNascimento":"01/01/1984",
-            "telefone": "719848276355",
-            "endereco": "Rua J, jorgelandia, número 70",
-            "crm": "123456",
-            "tipo": "ProfissionalDeSaude"
-        }
-    ],
-    "$Cuidador":[
-        {
-            "login": "mae",
-            "senha": "mae",
-            "nome": "mae de jorge ",
-            "cpf": "12345678911",
-            "dataNascimento":"01/01/1984",
-            "telefone": "719848276330",
-            "endereco": "Rua J, jorgelandia, número 10",
-            "parentesco": "mãe",
-            "tipo": "Cuidador"
-        }
-    ],
-    "$Administradore":{}    
+  "$Paciente": [
+    {
+      "login": "jjObrabo",
+      "senha": "jjObrabo",
+      "nome": "jorge júnior",
+      "cpf": "12345678910",
+      "dataNascimento": "01/01/2010",
+      "telefone": "71912344321",
+      "endereco": "Rua J, jorgelandia, número 10",
+      "cuidador": "12345678911",
+      "profSaude": "CRM123456",
+      "tipo": "Paciente"
+    }
+  ],
+  "$ProfissionalDeSaude": [
+    {
+      "login": "medicao",
+      "senha": "medicao",
+      "nome": "Senhor médico",
+      "cpf": "12345678912",
+      "dataNascimento": "01/01/1984",
+      "telefone": "719848276355",
+      "endereco": "Rua J, jorgelandia, número 70",
+      "crm": "CRM123456",
+      "tipo": "ProfissionalDeSaude"
+    }
+  ],
+  "$Cuidador": [
+    {
+      "login": "mae",
+      "senha": "mae",
+      "nome": "mae de jorge ",
+      "cpf": "12345678911",
+      "dataNascimento": "01/01/1984",
+      "telefone": "719848276330",
+      "endereco": "Rua J, jorgelandia, número 10",
+      "parentesco": "mãe",
+      "tipo": "Cuidador"
+    }
+  ],
+  "$Administradore": {}
 }

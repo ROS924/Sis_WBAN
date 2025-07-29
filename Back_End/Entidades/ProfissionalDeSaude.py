@@ -7,6 +7,8 @@ class ProfissionalDeSaude(Usuario):
       super().__init__(login,senha,tipo,nome,cpf,dataNascimento,telefone,endereco)
       self.crm = crm
 
+      self.client.on_message = self.on_message
+
    def monitorarPaciente(self, paciente_id: str):
       """
       Solicita ao sistema os dados mais recentes de um paciente.

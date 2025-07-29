@@ -1,5 +1,5 @@
 import json
-from ..Enums import Usuarios 
+from Back_End.Enums import Usuarios 
 import paho.mqtt.client as mqtt
 
 tipoUsuario = Usuarios.TipoDeUsuario
@@ -65,7 +65,6 @@ class Usuario:
 
     def on_message(self, client, userdata, msg):
         mensagem = msg.payload.decode()
-        mensagem = json.loads(mensagem)
 
         if not mensagem.strip():
             print(f"[{self.login}] ⚠️ Mensagem vazia recebida em {msg.topic}")
