@@ -17,12 +17,34 @@ prof.conectar()
 
 time.sleep(2)
 
+print("Sistema ativo. Pressione Ctrl+C para encerrar.")
 
-    
-# ✅ MANTÉM O SCRIPT RODANDO
 try:
     while True:
-        time.sleep(1)
+        print("\n--- MENU ---")
+        print("1 - Enviar recomendação ao paciente")
+        print("2 - Emitir requisição de exames")
+        print("0 - Sair")
+        comando = input("> ").strip()
+
+        if comando == "1":
+            recomendacao = input("Digite a recomendação: ")
+            prof.enviarRecomendacoes("12345678910", recomendacao)
+
+        elif comando == "2":
+            exames = input("Digite os exames a requisitar: ")
+            prof.emitirRequisicaoExames("12345678910", exames)
+
+        elif comando == "0":
+            print("Encerrando...")
+            break
+
+        else:
+            print("Comando inválido. Tente novamente.")
+
+        time.sleep(0.5)
+
 except KeyboardInterrupt:
-    print("Encerrando...")
-    prof.desconectar()
+    print("\nInterrompido pelo usuário.")
+
+prof.desconectar()

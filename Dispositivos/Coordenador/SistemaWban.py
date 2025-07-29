@@ -213,7 +213,60 @@ class SistemaWban:
                 "msg_texto": ""
             }
             self.gerarAlerta(mes, dados)
+        elif mensagem["acao"] == "enviar_recomendacoes":
+            db = self.carregar_dados()
+            
+            # Buscar o paciente (destinatário da recomendação)
+            destinatario = self.buscarEntidade(
+                db, 
+                cpf=mensagem["usuario_destino"], 
+                tipoEntidade=mensagem["tipo_usuario_destino"]
+            )
 
+            if isinstance(destinatario, str) and "erro" in destinatario:
+                print("Erro: destinatário não encontrado")
+                return
+
+            topico = f"{mensagem['tipo_usuario_destino']}/{destinatario['login']}/sub"
+
+            nova_msg = {
+                "acao": "recomendacao_recebida",
+                "tipo_usuario_origem": mensagem["tipo_usuario_origem"],
+                "tipo_usuario_destino": mensagem["tipo_usuario_destino"],
+                "usuario_origem": mensagem["usuario_origem"],  # CRM do médico
+                "usuario_destino": mensagem["usuario_destino"],  # CPF do paciente
+                "dados": mensagem["dados"],
+                "msg_texto": mensagem["msg_texto"]
+            }
+
+            self.publicar(nova_msg, topico)
+
+        elif mensagem["acao"] == "requisitar_exames":
+            db = self.carregar_dados()
+            
+            # Buscar o paciente (destinatário da recomendação)
+            destinatario = self.buscarEntidade(
+                db, 
+                cpf=mensagem["usuario_destino"], 
+                tipoEntidade=mensagem["tipo_usuario_destino"]
+            )
+
+            if isinstance(destinatario, str) and "erro" in destinatario:
+                print("Erro: destinatário não encontrado")
+                return
+
+            topico = f"{mensagem['tipo_usuario_destino']}/{destinatario['login']}/sub"
+
+            nova_msg = {
+                "acao": "exame_solicitado",
+                "tipo_usuario_origem": mensagem["tipo_usuario_origem"],
+                "tipo_usuario_destino": mensagem["tipo_usuario_destino"],
+                "usuario_origem": mensagem["usuario_origem"],  # CRM do médico
+                "usuario_destino": mensagem["usuario_destino"],  # CPF do paciente
+                "dados": mensagem["dados"],
+                "msg_texto": mensagem["msg_texto"]
+            }
+            self.publicar(nova_msg, topico)
 
         return mensagem
 

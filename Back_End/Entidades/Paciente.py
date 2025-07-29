@@ -43,13 +43,19 @@ class Paciente(Usuario):
         elif mensagem["acao"] == "res_regis":
             notificacao = f"{mensagem['msg_texto']}"
 
+        elif mensagem["acao"] == "recomendacao_recebida":
+            notificacao = f"Atenção: {mensagem['msg_texto']}"
+            
+        elif mensagem["acao"] == "exame_solicitado":
+            notificacao = f"Atenção: {mensagem['msg_texto']} solicitado!"
+        
         if notificacao:
             print(f"[{self.login}] 📢 Notificação recebida:\n{notificacao}")
             return notificacao
         else:
             print(f"[{self.login}] ⚠️ Mensagem desconhecida: {mensagem}")
             return None
-   
+        
    def atualizarDados(self, novosDados:json):
        mensagem = {"acao": "regis",
                     "tipo_usuario_origem": self.tipo,

@@ -90,18 +90,18 @@ class ProfissionalDeSaude(Usuario):
         }
         self.publicar(mensagem)
 
-   def emitirRequisicaoExames(self, paciente_id: str):
+   def emitirRequisicaoExames(self, paciente_id: str,recomendacoes: str):
         """
         Emite requisição de exames para um paciente.
         """
         mensagem = {
         "acao": "requisitar_exames",
         "tipo_usuario_origem": self.tipo,
-        "tipo_usuario_destino": tipoUsuario.Paciente,
+        "tipo_usuario_destino": tipoUsuario.Paciente.name,
         "usuario_origem": self.cpf,
         "usuario_destino": paciente_id,
         "dados": "",
-        "msg_texto": ""
+        "msg_texto": recomendacoes
         }
         self.publicar(mensagem)
 
@@ -112,7 +112,7 @@ class ProfissionalDeSaude(Usuario):
         mensagem = {
         "acao": "enviar_recomendacoes",
         "tipo_usuario_origem": self.tipo,
-        "tipo_usuario_destino": tipoUsuario.Paciente,
+        "tipo_usuario_destino": tipoUsuario.Paciente.name,
         "usuario_origem": self.cpf,
         "usuario_destino": paciente_id,
         "dados": "",
