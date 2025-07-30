@@ -12,6 +12,6 @@ Para testar o sistema basta iniciar três terminais e em cada um executar, a par
 
 python teste_Sistema.py
 
-python -m Back_Enc.Entidades.teste_paciente
+python -m Back_End.Entidades.teste_paciente
 
-python -m Back_Enc.Entidades.teste_profissional
+python -m Back_End.Entidades.teste_profissional
